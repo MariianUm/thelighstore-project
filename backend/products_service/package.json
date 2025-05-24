@@ -1,0 +1,15 @@
+{
+  "name": "products-service",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "flask run --port=5000",
+    "dev": "FLASK_DEBUG=1 flask run --port=5000",
+    "init-db": "flask db upgrade"
+  },
+  "dependencies": {
+    "flask": "^0.0.0",
+    "flask-sqlalchemy": "^0.0.0",
+    "flask-migrate": "^0.0.0",
+    "psycopg2-binary": "^0.0.0"
+  }
+}
