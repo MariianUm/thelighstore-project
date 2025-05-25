@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  orders-service:
+    build: ./backend/orders_service
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://postgres:postgres@orders_db:5432/orders_db
+      - PRODUCTS_SERVICE_URL=http://products-service:5000
+    depends_on:
+      - orders_db
+      - products-service
+    volumes:
+      - ./backend/orders_service:/app
+
+  orders_db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: orders_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - orders_pgdata:/var/lib/postgresql/data
+
+  products-service:
+    build: ./backend/products_service
+    ports:
+      - "5002:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://postgres:postgres@products_db:5432/products_db
+    depends_on:
+      - products_db
+    volumes:
+      - ./backend/products_service:/app
+
+  products_db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: products_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - products_pgdata:/var/lib/postgresql/data
+
+volumes:
+  orders_pgdata:
+  products_pgdata:
+

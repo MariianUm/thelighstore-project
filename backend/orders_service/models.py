@@ -5,6 +5,7 @@ db = SQLAlchemy()
 
 class Order(db.Model):
     __tablename__ = 'orders'
+
     id = db.Column(db.Integer, primary_key=True)
     customer_name = db.Column(db.String(255), nullable=False)
     phone = db.Column(db.String(50), nullable=False)
@@ -14,6 +15,7 @@ class Order(db.Model):
     total = db.Column(db.Float, nullable=False)
     comment = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
     items = db.relationship('OrderItem', backref='order', lazy=True)
 
     def to_dict(self):
@@ -32,6 +34,7 @@ class Order(db.Model):
 
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
+
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, nullable=False)
