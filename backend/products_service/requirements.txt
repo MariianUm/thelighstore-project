@@ -2,5 +2,6 @@ Flask==2.2.2
 Flask-SQLAlchemy==3.0.3
 Flask-Migrate==4.0.3
 psycopg2-binary==2.9.5
-Werkzeug<3.0.0   
+Werkzeug<3.0.0
+flask-cors   
 
