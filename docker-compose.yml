@@ -51,7 +51,30 @@ services:
     volumes:
       - products_pgdata:/var/lib/postgresql/data
 
+  auth_service:
+    build: ./backend/auth_service
+    ports:
+      - "8000:5000"
+    environment:
+      FLASK_APP: app.py
+      FLASK_DEBUG: 1
+    depends_on:
+      - auth_db
+    volumes:
+      - ./backend/auth_service:/app
+
+  auth_db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - auth_pgdata:/var/lib/postgresql/data
+
 volumes:
   orders_pgdata:
   products_pgdata:
-
+  auth_pgdata:

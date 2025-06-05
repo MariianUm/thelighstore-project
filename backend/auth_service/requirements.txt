@@ -1,0 +1,8 @@
+fastapi==0.110.0
+sqlalchemy==1.4.52
+psycopg2-binary
+python-jose
+passlib[bcrypt]
+uvicorn
+bcrypt>=4.0.1
+passlib[bcrypt]
