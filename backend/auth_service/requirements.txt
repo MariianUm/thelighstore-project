@@ -6,3 +6,4 @@ passlib[bcrypt]
 uvicorn
 bcrypt>=4.0.1
 passlib[bcrypt]
+fastapi[all]

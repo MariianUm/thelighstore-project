@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -31,6 +32,14 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "secret")
 ALGORITHM = "HS256"
@@ -39,6 +48,10 @@ ALGORITHM = "HS256"
 class UserCreate(BaseModel):
     username: str
     email: str
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
     password: str
 
 class Token(BaseModel):
@@ -68,7 +81,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
 # Логин
 @app.post("/login", response_model=Token)
-def login(user: UserCreate, db: Session = Depends(get_db)):
+def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter_by(username=user.username).first()
     if not db_user or not bcrypt.verify(user.password, db_user.password_hash):
         raise HTTPException(status_code=401, detail="Неверные учетные данные")
@@ -79,4 +92,3 @@ def login(user: UserCreate, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=5000, reload=False)
-
