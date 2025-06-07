@@ -1,0 +1,290 @@
+/* style.css */
+:root {
+    --main-pink: #ff69b4;
+    --light-pink: #ffb6c1;
+    --bg-pink: #fff0f6;
+    --dark-text: #4a4a4a;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+    background: var(--bg-pink);
+    color: var(--dark-text);
+  }
+  
+  .header {
+    background: linear-gradient(135deg, var(--main-pink), #ff1493);
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.3s;
+  }
+  
+  .nav-link:hover {
+    opacity: 0.9;
+  }
+  
+  .cart-button {
+    background: white;
+    color: var(--main-pink);
+    padding: 0.6rem 1.2rem;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.3s;
+  }
+  
+  .cart-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .cart-count {
+    margin-left: 6px;
+    background: var(--main-pink);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    margin-top: 100px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .product-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .product-info {
+    padding: 1rem;
+  }
+  
+  .product-info h3 {
+    font-size: 1.2rem;
+    color: var(--main-pink);
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-info p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--dark-text);
+  }
+  
+  .product-info .price {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 25px;
+    background: var(--main-pink);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #ff5cad, #ff3399);
+    padding: 10px 0;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .header-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-nav {
+    background: #fff;
+    color: #ff3399;
+    font-weight: bold;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .btn-nav.active,
+  .btn-nav:hover {
+    background: #ffb3d9;
+  }
+
+  .btn-nav {
+    background: #ffc5db; /* светло-розовый */
+    color: #ff3399;
+    font-weight: bold;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 5px rgba(255, 105, 180, 0.2);
+    transition: background 0.2s ease, transform 0.2s;
+  }
+  
+  .btn-nav.active,
+  .btn-nav:hover {
+    background: #ffa9cc; /* чуть темнее при hover или активной вкладке */
+    transform: translateY(-1px);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    margin-top: 40px;
+  }
+
+  .login-box {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(255, 105, 180, 0.2);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .login-box h2 {
+    text-align: center;
+    color: var(--main-pink);
+    font-size: 1.6rem;
+    margin-bottom: 1.8rem;
+  }
+  
+  .login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
+  
+  .login-box input {
+    padding: 1rem;
+    border: 2px solid var(--light-pink);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border 0.2s ease;
+  }
+  
+  .login-box input:focus {
+    outline: none;
+    border-color: var(--main-pink);
+    box-shadow: 0 0 6px rgba(255, 105, 180, 0.25);
+  }
+  
+  .login-box button {
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background: var(--main-pink);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .login-box button:hover {
+    background: #ff1493;
+  }
+  
+  .login-box .error {
+    color: red;
+    text-align: center;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+  }
+  
+  
+  
+  
+  

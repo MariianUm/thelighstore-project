@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка товара | TheLightStore</title>
+    <style>
+       
+        :root {
+            --main-pink: #ff69b4;
+            --light-pink: #ffb6c1;
+            --bg-pink: #fff0f6;
+            --dark-text: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+            background: var(--bg-pink);
+            color: var(--dark-text);
+        }
+
+        /* Шапка */
+        .header {
+            background: linear-gradient(135deg, var(--main-pink), #ff1493);
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .nav-link:hover {
+            opacity: 0.9;
+        }
+
+        .cart-button {
+            background: white;
+            color: var(--main-pink);
+            padding: 0.6rem 1.2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .cart-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            margin-left: 6px;
+            background: var(--main-pink);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        /* Стили страницы товара */
+        .product-detail {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .product-gallery {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+        }
+
+        .product-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+        }
+
+        .product-title {
+            color: var(--main-pink);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--light-pink);
+            border-radius: 10px;
+        }
+
+        .price {
+            color: var(--main-pink);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .product-description {
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-btn {
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            font-size: 1.2rem;
+            border: 2px solid var(--light-pink);
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+
+        .btn-add-to-cart {
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+
+        .btn-add-to-cart:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            text-align: center;
+            color: var(--main-pink);
+            margin-top: 100px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">TheLightStore</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="cart.html" class="cart-button">
+                    🛍️ Корзина <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div id="product-content"></div>
+    </main>
+
+    <script>
+        
+        const products = [
+    {
+        id: 1,
+        name: "Лампа накаливания 30W",
+        price: 120,
+        image: "lamp1.png",
+        description: "Классическая лампа накаливания с теплым светом. Мощность 30W, цоколь E27."
+    },
+    {
+        id: 2,
+        name: "Светодиодная лампа CoolDay",
+        price: 280,
+        image: "lamp2.png",
+        description: "Энергосберегающая LED-лампа холодного белого света. 5000K, 8W."
+    },
+    {
+        id: 3,
+        name: "Декоративная лампа Edison",
+        price: 670,
+        image: "lamp3.png",
+        description: "Винтажная нить накаливания в стиле Эдисона. Создает уютную атмосферу."
+    },
+    {
+        id: 4,
+        name: "Умная лампа SmartLight",
+        price: 1490,
+        image: "lamp4.png",
+        description: "Управляется через Wi-Fi, 16 млн цветов, регулировка яркости."
+    },
+    {
+        id: 5,
+        name: "Галогенная лампа PRO",
+        price: 430,
+        image: "lamp5.png",
+        description: "Яркий направленный свет для точечных светильников. 50W."
+    },
+    {
+        id: 6,
+        name: "Лампа-шар Crystal",
+        price: 890,
+        image: "lamp6.png",
+        description: "Сферический дизайн с хрустальным эффектом рассеивания."
+    },
+    {
+        id: 7,
+        name: "Лампа для растений FloraGrow",
+        price: 2450,
+        image: "lamp7.png",
+        description: "Специальный спектр для роста растений, 36W."
+    },
+    {
+        id: 8,
+        name: "Переносная лампа Camping",
+        price: 1320,
+        image: "lamp8.png",
+        description: "Водонепроницаемая, с USB-зарядкой. Идеальна для кемпинга."
+    },
+    {
+        id: 9,
+        name: "Лампа-ночник MoonLight",
+        price: 570,
+        image: "lamp9.png",
+        description: "Мягкий рассеянный свет с сенсорным управлением."
+    },
+    {
+        id: 10,
+        name: "Промышленный светильник Loft",
+        price: 3200,
+        image: "lamp10.png",
+        description: "Металлический дизайн в стиле лофт, мощность 60W."
+    },
+    {
+        id: 11,
+        name: "RGB-лампа ColorFest",
+        price: 1790,
+        image: "lamp11.png",
+        description: "16 цветовых режимов, управление через приложение."
+    },
+    {
+        id: 12,
+        name: "Лампа-бра Vintage",
+        price: 2100,
+        image: "lamp12.png",
+        description: "Классический дизайн для настенного монтажа."
+    },
+    {
+        id: 13,
+        name: "Лампа-плафон Origami",
+        price: 950,
+        image: "lamp13.png",
+        description: "Современный дизайн в стиле оригами."
+    },
+    {
+        id: 14,
+        name: "Ультратонкая панель UltraSlim",
+        price: 3650,
+        image: "lamp14.png",
+        description: "Современная LED-панель толщиной 1.5 см."
+    },
+    {
+        id: 15,
+        name: "Лампа-гирлянда Fairy",
+        price: 450,
+        image: "lamp15.png",
+        description: "Гибкая гирлянда с 24 светодиодами, длина 3м."
+    },
+    {
+        id: 16,
+        name: "Лампа-проектор Galaxy",
+        price: 2890,
+        image: "lamp16.png",
+        description: "Проецирует звездное небо на потолок и стены."
+    },
+    {
+        id: 17,
+        name: "Антикварная лампа Retro",
+        price: 4200,
+        image: "lamp17.png",
+        description: "Ручная работа, кованый металл, стиль начала XX века."
+    },
+    {
+        id: 18,
+        name: "Лампа-торшер Modern",
+        price: 5340,
+        image: "lamp18.png",
+        description: "Напольный светильник с регулируемой высотой."
+    },
+    {
+        id: 19,
+        name: "Солнечная лампа EcoSun",
+        price: 1890,
+        image: "lamp19.png",
+        description: "Работает от солнечной батареи, автоматическое включение ночью."
+    },
+    {
+        id: 20,
+        name: "Лампа для чтения BookLight",
+        price: 680,
+        image: "lamp20.png",
+        description: "Гибкий кронштейн, регулируемая яркость, защита глаз."
+    }
+];
+
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+        const product = products.find(p => p.id === productId);
+
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+        
+        function updateCartCount() {
+            const total = Object.values(cart).reduce((sum, count) => sum + count, 0);
+            document.querySelector('.cart-count').textContent = total;
+        }
+
+        function renderProduct() {
+            const container = document.getElementById('product-content');
+            
+            if (!product) {
+                container.innerHTML = `<div class="error-message">Товар не найден</div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="product-detail">
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <img src="img/${product.image}" alt="${product.name}">
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h1 class="product-title">${product.name}</h1>
+                        <div class="product-meta">
+                            <span>Мощность: 30W</span>
+                            <span class="price">${product.price} ₽/шт</span>
+                        </div>
+                        <div class="product-description">
+                            <p>${product.description}</p>
+                        </div>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus">-</button>
+                            <input type="number" value="1" min="1" class="quantity-input">
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="btn-add-to-cart">В корзину</button>
+                    </div>
+                </div>
+            `;
+
+            
+            document.querySelector('.minus').addEventListener('click', () => {
+                const input = document.querySelector('.quantity-input');
+                input.value = Math.max(1, input.value - 1);
+            });
+
+            document.querySelector('.plus').addEventListener('click', () => {
+                const input = document.querySelector('.quantity-input');
+                input.value = parseInt(input.value) + 1;
+            });
+
+            document.querySelector('.btn-add-to-cart').addEventListener('click', () => {
+                const quantity = parseInt(document.querySelector('.quantity-input').value);
+                cart[productId] = (cart[productId] || 0) + quantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                alert(`Добавлено ${quantity} шт. в корзину!`);
+            });
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            renderProduct();
+        });
+    </script>
+</body>
+</html>

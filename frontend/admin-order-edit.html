@@ -1,0 +1,86 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Редактирование заказа</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-page">
+  <header>
+    <h1>Редактирование заказа</h1>
+  </header>
+  <main class="admin-container">
+    <div class="tabs">
+      <button onclick="window.location.href='admin-orders.html'">Заказы</button>
+      <button onclick="window.location.href='admin-products.html'">Товары</button>
+    </div>
+
+    <section class="order-edit-form">
+      <h2>Редактирование заказа №12345 от 2025-04-15</h2>
+
+      <form>
+        <label>ФИО:
+          <input type="text" name="full_name" value="Иванов Иван Иванов" />
+        </label>
+
+        <label>Адрес доставки:
+          <input type="text" name="address" value="Ленинградский проспект д. 68" />
+        </label>
+
+        <label>e-mail:
+          <input type="email" name="email" value="ivanov@mail.ru" />
+        </label>
+
+        <label>Телефон:
+          <input type="tel" name="phone" value="+79998887766" />
+        </label>
+
+        <label>Комментарий к заказу:
+          <textarea name="comment">Привезите после 19</textarea>
+        </label>
+
+        <label>Статус заказа:
+          <select name="status">
+            <option>Доставляется</option>
+            <option selected>Оплачен</option>
+            <option>Отменен</option>
+          </select>
+        </label>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Наименование</th>
+              <th>Цена, руб</th>
+              <th>Количество</th>
+              <th>Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Лампа накаливания</td>
+              <td>120</td>
+              <td>2</td>
+              <td>240</td>
+            </tr>
+            <tr>
+              <td>Светодиодная лампа</td>
+              <td>80</td>
+              <td>5</td>
+              <td>400</td>
+            </tr>
+            <tr>
+              <td>Лампа LED</td>
+              <td>90</td>
+              <td>10</td>
+              <td>900</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="submit">Сохранить</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

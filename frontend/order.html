@@ -1,0 +1,259 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Карточка заказа | TheLightStore</title>
+  <style>
+    :root {
+      --main-pink: #ff69b4;
+      --light-pink: #ffb6c1;
+      --bg-pink: #fff0f6;
+      --dark-text: #4a4a4a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      background: var(--bg-pink);
+      color: var(--dark-text);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--main-pink), #ff1493);
+      padding: 1rem;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.5rem;
+      text-decoration: none;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.3s;
+    }
+
+    .nav-link:hover {
+      opacity: 0.9;
+    }
+
+    .cart-button {
+      background: white;
+      color: var(--main-pink);
+      padding: 0.6rem 1.2rem;
+      border-radius: 15px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .cart-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .cart-count {
+      margin-left: 6px;
+      background: var(--main-pink);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+
+    .order-container {
+      max-width: 1200px;
+      margin: 100px auto 0;
+      padding: 2rem;
+    }
+
+    .order-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.1);
+    }
+
+    .order-section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--light-pink);
+    }
+
+    .order-title {
+      color: var(--main-pink);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .order-table td,
+    .order-table th {
+      padding: 1rem;
+      border-bottom: 1px solid var(--light-pink);
+    }
+
+    .order-table td:nth-child(2),
+    .order-table th:nth-child(2) {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .order-table td:nth-child(3),
+    .order-table td:nth-child(4),
+    .order-table th:nth-child(3),
+    .order-table th:nth-child(4) {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .order-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--light-pink);
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-primary {
+      background: var(--main-pink);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-content">
+    <a href="index.html" class="logo">TheLightStore</a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Главная</a>
+      <a href="cart.html" class="cart-button">🛍️ Корзина <span class="cart-count">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="order-container">
+  <div class="order-card">
+    <div class="order-section">
+      <h2 class="order-title">Карточка заказа</h2>
+      <table class="order-table">
+        <tr>
+          <td>ФИО клиента</td>
+          <td><input type="text" class="order-input" placeholder="Введите ФИО" /></td>
+        </tr>
+        <tr>
+          <td>Номер заказа</td>
+          <td><input type="text" class="order-input" id="order-number" readonly /></td>
+        </tr>
+        <tr>
+          <td>Статус заказа</td>
+          <td>
+            <select class="order-input">
+              <option>Оплачен</option>
+              <option>В обработке</option>
+              <option>Отменен</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="order-section">
+      <h3 class="order-title">Детали заказа</h3>
+      <table class="order-table">
+        <tr>
+          <td>Телефон клиента</td>
+          <td><input type="tel" class="order-input" placeholder="+7 (999) 999-99-99" /></td>
+        </tr>
+        <tr>
+          <td>Адрес клиента</td>
+          <td><input type="text" class="order-input" placeholder="Введите адрес доставки" /></td>
+        </tr>
+        <tr>
+          <td>Дата заказа</td>
+          <td><input type="date" class="order-input" id="order-date" /></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="order-section">
+      <h3 class="order-title">Товары</h3>
+      <table class="order-table">
+        <thead>
+        <tr>
+          <th>Фото</th>
+          <th>Название</th>
+          <th>Мощность</th>
+          <th>Цена</th>
+          <th>Количество</th>
+          <th>Сумма</th>
+        </tr>
+        </thead>
+        <tbody id="order-items"></tbody>
+        <tfoot>
+        <tr>
+          <td colspan="5"><strong>Итого:</strong></td>
+          <td id="order-total">0 ₽</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="order-actions">
+      <button class="btn-primary">Оформить заказ</button>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="js/order.js"></script>
+</body>
+</html>

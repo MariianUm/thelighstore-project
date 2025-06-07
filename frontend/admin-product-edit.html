@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Редактирование товара</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">TheLightStore</div>
+    <nav>
+      <button onclick="window.location.href='admin-orders.html'">Заказы</button>
+      <button onclick="window.location.href='admin-products.html'" class="active">Товары</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 id="form-title">Редактирование товара</h1>
+
+    <form id="edit-product-form" class="product-form">
+      <div class="product-form-left">
+        <img id="preview-img" class="product-preview" src="img/placeholder.png" alt="Превью товара" />
+        <input type="file" id="image-upload" accept="image/*" />
+      </div>
+      <div class="product-form-right">
+        <input type="text" name="name" placeholder="Название товара" required />
+        <input type="text" name="description" placeholder="Описание" required />
+        <input type="number" name="price" placeholder="Цена" required />
+        <input type="text" name="image" placeholder="Имя файла изображения (lamp1.png)" required />
+
+        <div class="form-buttons">
+          <button type="submit" class="btn">Сохранить</button>
+          <button type="button" id="delete-button" class="btn delete">Удалить</button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">
+    © 2025 TheLightStore. Все права защищены
+  </footer>
+
+  <script src="js/admin-product-edit.js"></script>
+</body>
+</html>
+
+
+

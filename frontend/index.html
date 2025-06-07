@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheLightStore - Розовые лампы</title>
+    <style>
+        :root {
+            --main-pink: #ff69b4;
+            --light-pink: #ffb6c1;
+            --bg-pink: #fff0f6;
+            --dark-text: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+            background: var(--bg-pink);
+            color: var(--dark-text);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--main-pink), #ff1493);
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .nav-link:hover {
+            opacity: 0.9;
+        }
+
+        .cart-button {
+            background: white;
+            color: var(--main-pink);
+            padding: 0.6rem 1.2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .cart-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            margin-left: 6px;
+            background: var(--main-pink);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 1rem;
+        }
+
+        .products-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .product-info {
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 0.9rem;
+            color: var(--main-pink);
+            margin-bottom: 0.5rem;
+            min-height: 40px;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            color: var(--main-pink);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .cart-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart {
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #ff1493;
+            transform: translateY(-2px);
+        }
+
+        .quantity-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: var(--light-pink);
+            border-radius: 20px;
+            padding: 0.25rem;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: none;
+            color: var(--main-pink);
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .product-count {
+            min-width: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: var(--main-pink);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">TheLightStore</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="cart.html" class="cart-button">
+                    🛍️ Корзина <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="products-grid" id="products-container"></div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 TheLightStore. Все права защищены</p>
+    </footer>
+
+    <!-- 👇 Это ключевая строка -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

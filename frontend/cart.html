@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина | TheLightStore</title>
+    <style>
+        :root {
+            --main-pink: #ff69b4;
+            --light-pink: #ffb6c1;
+            --bg-pink: #fff0f6;
+            --dark-text: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+            background: var(--bg-pink);
+            color: var(--dark-text);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--main-pink), #ff1493);
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .cart-button {
+            background: white;
+            color: var(--main-pink);
+            padding: 0.6rem 1.2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .cart-count {
+            margin-left: 6px;
+            background: var(--main-pink);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        .cart-title {
+            color: var(--main-pink);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        .cart-table th {
+            background: var(--light-pink);
+            color: var(--dark-text);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: var(--main-pink);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--main-pink);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+        }
+
+        .checkout-btn {
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            width: 100%;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">TheLightStore</a>
+            <nav class="nav-links">
+                <a href="index.html" class="cart-button">
+                    🛍️ Корзина <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="cart-container">
+        <h1 class="cart-title">Товары в корзине</h1>
+        
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>Мощность</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+               
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <div class="total-price">
+                Итого: <span id="total-sum">0</span> ₽
+            </div>
+            <button class="checkout-btn">Оформить заказ</button>
+        </div>
+    </main>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+        const storedProducts = localStorage.getItem('products');
+        const products = storedProducts ? JSON.parse(storedProducts) : [];
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            let totalSum = 0;
+            
+            container.innerHTML = Object.keys(cart)
+                .filter(productId => cart[productId] > 0)
+                .map(productId => {
+                    const product = products.find(p => p.id === parseInt(productId));
+                    if (!product) return '';
+                    
+                    const quantity = cart[productId];
+                    totalSum += product.price * quantity;
+                    
+                    return `
+                        <tr>
+                            <td><img src="img/${product.image}" class="product-image" alt="${product.name}"></td>
+                            <td>${product.name}</td>
+                            <td>${product.description.match(/\d+W/)?.[0] || '-'}</td>
+                            <td>${product.price} ₽</td>
+                            <td>
+                                <div class="quantity-control">
+                                    <button class="quantity-btn" onclick="updateQuantity(${product.id}, -1)">-</button>
+                                    <span>${quantity}</span>
+                                    <button class="quantity-btn" onclick="updateQuantity(${product.id}, 1)">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="remove-btn" onclick="removeItem(${product.id})">Удалить</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+            document.getElementById('total-sum').textContent = totalSum;
+            updateCartCount();
+        }
+
+        function updateQuantity(id, delta) {
+            const productId = id.toString();
+            cart[productId] = (cart[productId] || 0) + delta;
+            
+            if (cart[productId] < 1) delete cart[productId];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function removeItem(id) {
+            const productId = id.toString();
+            delete cart[productId];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function updateCartCount() {
+            const total = Object.values(cart).reduce((a, b) => a + b, 0);
+            document.querySelectorAll('.cart-count').forEach(el => el.textContent = total);
+        }
+
+        document.querySelector('.checkout-btn').addEventListener('click', () => {
+            
+            Object.keys(cart).forEach(productId => {
+                if (cart[productId] < 1) delete cart[productId];
+            });
+            
+            // Пересчет
+            const totalSum = Object.entries(cart).reduce((sum, [id, quantity]) => {
+                const product = products.find(p => p.id === parseInt(id));
+                return sum + (product?.price || 0) * quantity;
+            }, 0);
+
+            // Сохранение заказа
+            const orderData = {
+                items: cart,
+                total: totalSum,
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+            
+            localStorage.setItem('currentOrder', JSON.stringify(orderData));
+            localStorage.setItem('cart', JSON.stringify(cart)); // Обновляем корзину
+            window.location.href = 'order.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!storedProducts) {
+                localStorage.setItem('products', JSON.stringify([
+                {
+                id: 1,
+                name: "Лампа накаливания 30W",
+                price: 120,
+                image: "lamp1.png",
+                description: "Классическая лампа накаливания с теплым светом. Мощность 30W, цоколь E27."
+            },
+            {
+                id: 2,
+                name: "Светодиодная лампа CoolDay",
+                price: 80,
+                image: "lamp2.png",
+                description: "Энергосберегающая LED-лампа холодного белого света. 5000K, 8W."
+            },
+            {
+                id: 3,
+                name: "Лампа LED",
+                price: 90,
+                image: "lamp3.png",
+                description: "Винтажная нить накаливания в стиле Эдисона. Создает уютную атмосферу."
+            },
+            {
+                id: 4,
+                name: "Умная лампа SmartLight",
+                price: 1490,
+                image: "lamp4.png",
+                description: "Управляется через Wi-Fi, 16 млн цветов, регулировка яркости."
+            },
+            {
+                id: 5,
+                name: "Галогенная лампа PRO",
+                price: 430,
+                image: "lamp5.png",
+                description: "Яркий направленный свет для точечных светильников. 50W."
+            },
+            {
+                id: 6,
+                name: "Лампа-шар Crystal",
+                price: 890,
+                image: "lamp6.png",
+                description: "Сферический дизайн с хрустальным эффектом рассеивания."
+            },
+            {
+                id: 7,
+                name: "Лампа для растений FloraGrow",
+                price: 2450,
+                image: "lamp7.png",
+                description: "Специальный спектр для роста растений, 36W."
+            },
+            {
+                id: 8,
+                name: "Переносная лампа Camping",
+                price: 1320,
+                image: "lamp8.png",
+                description: "Водонепроницаемая, с USB-зарядкой. Идеальна для кемпинга."
+            },
+            {
+                id: 9,
+                name: "Лампа-ночник MoonLight",
+                price: 570,
+                image: "lamp9.png",
+                description: "Мягкий рассеянный свет с сенсорным управлением."
+            },
+            {
+                id: 10,
+                name: "Промышленный светильник Loft",
+                price: 3200,
+                image: "lamp10.png",
+                description: "Металлический дизайн в стиле лофт, мощность 60W."
+            },
+            {
+                id: 11,
+                name: "RGB-лампа ColorFest",
+                price: 1790,
+                image: "lamp11.png",
+                description: "16 цветовых режимов, управление через приложение."
+            },
+            {
+                id: 12,
+                name: "Лампа-бра Vintage",
+                price: 2100,
+                image: "lamp12.png",
+                description: "Классический дизайн для настенного монтажа."
+            },
+            {
+                id: 13,
+                name: "Лампа-плафон Origami",
+                price: 950,
+                image: "lamp1.png",
+                description: "Современный дизайн в стиле оригами."
+            },
+            {
+                id: 14,
+                name: "Ультратонкая панель UltraSlim",
+                price: 3650,
+                image: "lamp14.png",
+                description: "Современная LED-панель толщиной 1.5 см."
+            },
+            {
+                id: 15,
+                name: "Лампа-гирлянда Fairy",
+                price: 450,
+                image: "lamp15.png",
+                description: "Гибкая гирлянда с 24 светодиодами, длина 3м."
+            },
+            {
+                id: 16,
+                name: "Лампа-проектор Galaxy",
+                price: 2890,
+                image: "lamp16.png",
+                description: "Проецирует звездное небо на потолок и стены."
+            },
+            {
+                id: 17,
+                name: "Антикварная лампа Retro",
+                price: 4200,
+                image: "lamp17.png",
+                description: "Ручная работа, кованый металл, стиль начала XX века."
+            },
+            {
+                id: 18,
+                name: "Лампа-торшер Modern",
+                price: 5340,
+                image: "lamp18.png",
+                description: "Напольный светильник с регулируемой высотой."
+            },
+            {
+                id: 19,
+                name: "Солнечная лампа EcoSun",
+                price: 1890,
+                image: "lamp19.png",
+                description: "Работает от солнечной батареи, автоматическое включение ночью."
+            },
+            {
+                id: 20,
+                name: "Лампа для чтения BookLight",
+                price: 680,
+                image: "lamp20.png",
+                description: "Гибкий кронштейн, регулируемая яркость, защита глаз."
+            }
+                ]));
+            }
+            renderCart();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
