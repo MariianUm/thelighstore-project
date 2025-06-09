@@ -14,7 +14,7 @@ class Order(db.Model):
     total = db.Column(db.Float, nullable=False)
     comment = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    items = db.relationship('OrderItem', backref='order', lazy=True)
+    items = db.relationship('OrderItem', backref='order', lazy='subquery')
 
     def to_dict(self):
         return {

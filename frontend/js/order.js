@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sum = qty * product.price;
         total += sum;
 
-        const image = product.image_url ? product.image_url : 'placeholder.png';
+        const image = product.image_url || 'placeholder.png';
         const power = product.description?.match(/\b\d+W\b/)?.[0] || '-';
 
         return `<tr>
@@ -42,31 +42,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
 
     totalPriceElement.textContent = `${total} ₽`;
-
     orderDateInput.value = new Date().toISOString().split('T')[0];
     orderNumberInput.value = `ORD-${Date.now()}`;
 
-    document.querySelector('.btn-primary').addEventListener('click', async () => {
-        const orderData = {
-            customer_name: customerNameInput.value,
-            phone: phoneInput.value,
-            address: addressInput.value,
-            email: 'client@example.com',
-            comment: '',
-            items: validItems.map(({ product, qty }) => ({
-                product_id: product.id,
-                quantity: qty
-            }))
-        };
+    const orderButton = document.querySelector('.btn-primary');
+    if (orderButton) {
+        orderButton.addEventListener('click', async () => {
+            const orderData = {
+                customer_name: customerNameInput.value,
+                phone: phoneInput.value,
+                address: addressInput.value,
+                email: 'client@example.com',
+                comment: '',
+                items: validItems.map(({ product, qty }) => ({
+                    product_id: product.id,
+                    quantity: qty
+                }))
+            };
 
-        try {
-            await createOrder(orderData);
-            localStorage.removeItem('cart');
-            window.location.href = 'index.html';
-        } catch (error) {
-            alert('Ошибка при оформлении заказа');
-        }
-    });
+            try {
+                await createOrder(orderData);
+                localStorage.removeItem('cart');
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert('Ошибка при оформлении заказа');
+                console.error(error);
+            }
+        });
+    } else {
+        console.warn('Кнопка "Оформить" не найдена');
+    }
 
     const count = Object.values(cart).reduce((a, b) => a + b, 0);
     document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);

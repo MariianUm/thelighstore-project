@@ -1,35 +1,49 @@
-const PRODUCTS_API_URL = "http://localhost:5002/products";
 
-async function fetchProducts() {
-  try {
-    const response = await fetch(PRODUCTS_API_URL);
-    if (!response.ok) throw new Error("Ошибка загрузки товаров");
+import { fetchAllProducts, deleteProduct } from '../api/products.js';
 
-    const products = await response.json();
-    const tableBody = document.getElementById("products-table-body");
-    tableBody.innerHTML = ""; // Очищаем перед вставкой
+document.addEventListener('DOMContentLoaded', async () => {
+    const tableBody = document.getElementById('products-table-body');
 
-    products.forEach((product) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.price} ₽</td>
-        <td><button class="btn" onclick="editProduct(${product.id})">Изменить</button></td>
-      `;
-      tableBody.appendChild(row);
-    });
-  } catch (err) {
-    console.error("Ошибка:", err);
-  }
-}
+    try {
+        const products = await fetchAllProducts();
 
-function editProduct(productId) {
-  window.location.href = `admin-product-edit.html?id=${productId}`;
-}
+        products.forEach(product => {
+            const row = document.createElement('tr');
 
-document.getElementById("add-product-btn").addEventListener("click", () => {
-  window.location.href = "admin-product-edit.html";
+            row.innerHTML = `
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.price} руб.</td>
+                <td>
+                    <button class="edit-btn" data-id="${product.id}">Редактировать</button>
+                    <button class="delete-btn" data-id="${product.id}">Удалить</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        // Обработчики удаления
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const productId = button.getAttribute('data-id');
+                if (confirm('Удалить товар?')) {
+                    await deleteProduct(productId);
+                    location.reload();
+                }
+            });
+        });
+
+        // Обработчики редактирования
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const productId = button.getAttribute('data-id');
+                window.location.href = `admin-product-edit.html?id=${productId}`;
+            });
+        });
+
+    } catch (error) {
+        console.error('Ошибка при загрузке товаров:', error);
+        tableBody.innerHTML = '<tr><td colspan="4">Ошибка при загрузке товаров</td></tr>';
+    }
 });
-
-document.addEventListener("DOMContentLoaded", fetchProducts);

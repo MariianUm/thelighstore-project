@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/products*": {"origins": "http://localhost:8080"}})
 app.config.from_object(Config)
 
 db.init_app(app)
